@@ -1483,16 +1483,14 @@ export interface Post {
   featured?: boolean | null;
   category?: (number | null) | Taxonomy;
   tags?: (number | Taxonomy)[] | null;
-  author?: string | null;
   /**
-   * Optional. Shown beside the date.
+   * Shown at the top of the article and on its card in the journal.
    */
-  readingTime?: number | null;
+  featuredImage: number | Media;
   /**
-   * Shown on cards and in search results.
+   * One or two sentences. Shown on cards, and in search results if nothing else is set.
    */
   excerpt?: string | null;
-  featuredImage: number | Media;
   content: {
     root: {
       type: string;
@@ -1508,6 +1506,11 @@ export interface Post {
     };
     [k: string]: unknown;
   };
+  author?: string | null;
+  /**
+   * Optional. Shown beside the date.
+   */
+  readingTime?: number | null;
   /**
    * Leave blank to use the page title, description and default image.
    */
@@ -1561,6 +1564,9 @@ export interface Event {
   endDate_tz?: SupportedTimezones;
   startTime?: string | null;
   endTime?: string | null;
+  /**
+   * Tick for something like walk-in Sundays, which happen again and again.
+   */
   recurring?: boolean | null;
   /**
    * Shown on cards and listings.
@@ -1583,6 +1589,9 @@ export interface Event {
   } | null;
   location?: string | null;
   attendanceType?: ('appointment' | 'walk-in' | 'RSVP' | 'external-registration') | null;
+  /**
+   * Leave empty if it is at the boutique — the address from Site settings is used.
+   */
   address?: string | null;
   rsvpURL?: string | null;
   /**
@@ -2654,11 +2663,11 @@ export interface PostsSelect<T extends boolean = true> {
   featured?: T;
   category?: T;
   tags?: T;
+  featuredImage?: T;
+  excerpt?: T;
+  content?: T;
   author?: T;
   readingTime?: T;
-  excerpt?: T;
-  featuredImage?: T;
-  content?: T;
   seo?:
     | T
     | {
@@ -3810,10 +3819,16 @@ export interface Navigation {
 export interface Footer {
   id: number;
   /**
-   * Sits above the footer on every page. Clear the heading to hide it.
+   * Clear the heading to hide the band and start the footer at the columns.
    */
   preFooter?: {
+    /**
+     * Set large across the footer, e.g. “Your bridal journey starts here.”
+     */
     heading?: string | null;
+    /**
+     * Shown at the right of the band. Both fields are needed, or no button appears.
+     */
     button?: {
       label?: string | null;
       url?: string | null;
@@ -3872,9 +3887,15 @@ export interface Footer {
 export interface GiftCard {
   id: number;
   hero?: {
+    /**
+     * A few words in capitals, e.g. “Gift cards”.
+     */
     eyebrow?: string | null;
     heading?: string | null;
     description?: string | null;
+    /**
+     * Sits behind or beside the heading.
+     */
     image?: (number | null) | Media;
   };
   /**

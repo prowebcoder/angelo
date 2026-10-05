@@ -305,51 +305,88 @@ export const Events: CollectionConfig = {
     },
     { ...categoryPicker('eventType', 'event-type', 'Event type'), admin: { position: 'sidebar' } },
     {
-      type: 'row',
-      fields: [
-        { name: 'startDate', type: 'date', required: true, timezone: true, index: true, label: 'Start date', admin: { width: '50%' } },
-        { name: 'endDate', type: 'date', timezone: true, label: 'End date', admin: { width: '50%', description: 'Leave empty for a single day.' } },
-      ],
-    },
-    {
-      type: 'row',
-      fields: [
-        { name: 'startTime', type: 'text', label: 'Start time', admin: { width: '50%', placeholder: '11:00' } },
-        { name: 'endTime', type: 'text', label: 'End time', admin: { width: '50%', placeholder: '17:00' } },
-      ],
-    },
-    { name: 'recurring', type: 'checkbox', defaultValue: false, label: 'This event repeats' },
-    { name: 'shortDescription', type: 'textarea', label: 'Short description', admin: { description: 'Shown on cards and listings.' } },
-    { name: 'description', type: 'richText', label: 'Full details' },
-    {
-      type: 'row',
-      fields: [
-        { name: 'location', type: 'text', label: 'Location name', admin: { width: '50%' } },
+      type: 'tabs',
+      tabs: [
         {
-          name: 'attendanceType',
-          type: 'select',
-          label: 'How to attend',
-          admin: { width: '50%' },
-          options: [
-            { label: 'By appointment', value: 'appointment' },
-            { label: 'Walk-ins welcome', value: 'walk-in' },
-            { label: 'RSVP required', value: 'RSVP' },
-            { label: 'Register externally', value: 'external-registration' },
+          label: 'When',
+          description: 'The dates decide which list the event appears in, so these come first.',
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                { name: 'startDate', type: 'date', required: true, timezone: true, index: true, label: 'Start date', admin: { width: '50%' } },
+                { name: 'endDate', type: 'date', timezone: true, label: 'End date', admin: { width: '50%', description: 'Leave empty for a single day.' } },
+              ],
+            },
+            {
+              type: 'row',
+              fields: [
+                { name: 'startTime', type: 'text', label: 'Start time', admin: { width: '50%', placeholder: '11:00' } },
+                { name: 'endTime', type: 'text', label: 'End time', admin: { width: '50%', placeholder: '17:00' } },
+              ],
+            },
+            {
+              name: 'recurring',
+              type: 'checkbox',
+              defaultValue: false,
+              label: 'This event repeats',
+              admin: { description: 'Tick for something like walk-in Sundays, which happen again and again.' },
+            },
           ],
         },
+        {
+          label: 'What it is',
+          fields: [
+            { name: 'shortDescription', type: 'textarea', label: 'Short description', admin: { description: 'Shown on cards and listings.' } },
+            { name: 'description', type: 'richText', label: 'Full details' },
+          ],
+        },
+        {
+          label: 'Where & how to attend',
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                { name: 'location', type: 'text', label: 'Location name', admin: { width: '50%' } },
+                {
+                  name: 'attendanceType',
+                  type: 'select',
+                  label: 'How to attend',
+                  admin: { width: '50%' },
+                  options: [
+                    { label: 'By appointment', value: 'appointment' },
+                    { label: 'Walk-ins welcome', value: 'walk-in' },
+                    { label: 'RSVP required', value: 'RSVP' },
+                    { label: 'Register externally', value: 'external-registration' },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'address',
+              type: 'textarea',
+              label: 'Address',
+              admin: { description: 'Leave empty if it is at the boutique — the address from Site settings is used.' },
+            },
+            {
+              type: 'row',
+              fields: [
+                { name: 'rsvpURL', type: 'text', label: 'RSVP link', admin: { width: '50%' } },
+                { name: 'appointmentURL', type: 'text', label: 'Booking link', admin: { width: '50%', description: 'Leave empty to use the appointment page.' } },
+              ],
+            },
+          ],
+        },
+        {
+          label: 'Photographs',
+          fields: [
+            { name: 'heroImage', type: 'upload', relationTo: 'media', label: 'Header photograph' },
+            { name: 'gallery', type: 'upload', relationTo: 'media', hasMany: true, label: 'Photographs' },
+          ],
+        },
+        { label: 'Search engines', fields: [seoField()] },
       ],
     },
-    { name: 'address', type: 'textarea', label: 'Address' },
-    {
-      type: 'row',
-      fields: [
-        { name: 'rsvpURL', type: 'text', label: 'RSVP link', admin: { width: '50%' } },
-        { name: 'appointmentURL', type: 'text', label: 'Booking link', admin: { width: '50%', description: 'Leave empty to use the appointment page.' } },
-      ],
-    },
-    { name: 'heroImage', type: 'upload', relationTo: 'media', label: 'Header photograph' },
-    { name: 'gallery', type: 'upload', relationTo: 'media', hasMany: true, label: 'Photographs' },
-    seoField(),
   ],
 }
 
@@ -386,27 +423,50 @@ export const Posts: CollectionConfig = {
     { ...categoryPicker('category', 'journal-category', 'Category'), admin: { position: 'sidebar' } },
     { ...categoryPicker('tags', 'journal-tag', 'Tags', true), admin: { position: 'sidebar' } },
     {
-      type: 'row',
-      fields: [
-        { name: 'author', type: 'text', label: 'Written by', admin: { width: '50%' } },
+      type: 'tabs',
+      tabs: [
         {
-          name: 'readingTime',
-          type: 'number',
-          min: 1,
-          label: 'Reading time in minutes',
-          admin: { width: '50%', description: 'Optional. Shown beside the date.' },
+          label: 'The article',
+          description: 'The header photograph is required, so an article can never publish without one.',
+          fields: [
+            {
+              name: 'featuredImage',
+              type: 'upload',
+              relationTo: 'media',
+              required: true,
+              label: 'Header photograph',
+              admin: { description: 'Shown at the top of the article and on its card in the journal.' },
+            },
+            {
+              name: 'excerpt',
+              type: 'textarea',
+              label: 'Short summary',
+              admin: { description: 'One or two sentences. Shown on cards, and in search results if nothing else is set.' },
+            },
+            { name: 'content', type: 'richText', required: true, label: 'Article' },
+          ],
         },
+        {
+          label: 'Byline',
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                { name: 'author', type: 'text', label: 'Written by', admin: { width: '50%' } },
+                {
+                  name: 'readingTime',
+                  type: 'number',
+                  min: 1,
+                  label: 'Reading time in minutes',
+                  admin: { width: '50%', description: 'Optional. Shown beside the date.' },
+                },
+              ],
+            },
+          ],
+        },
+        { label: 'Search engines', fields: [seoField({ withCanonical: true })] },
       ],
     },
-    {
-      name: 'excerpt',
-      type: 'textarea',
-      label: 'Short summary',
-      admin: { description: 'Shown on cards and in search results.' },
-    },
-    { name: 'featuredImage', type: 'upload', relationTo: 'media', required: true, label: 'Header photograph' },
-    { name: 'content', type: 'richText', required: true, label: 'Article' },
-    seoField({ withCanonical: true }),
   ],
 }
 

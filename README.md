@@ -182,6 +182,50 @@ the menu.
 | **Photographs** | Media library |
 | **Settings** | Staff accounts · Site settings · Form settings |
 
+Every editor with more than a screenful of fields is divided into named tabs,
+so nobody scrolls looking for the thing they came to change:
+
+| Editor | Sections |
+| --- | --- |
+| Pages · Homepage | Opening section · Sections · Search engines |
+| Gowns | The gown · Photographs · Filters · Highlights · Search engines |
+| Events | When · What it is · Where & how to attend · Photographs · Search engines |
+| Real brides | The wedding · Photographs · Search engines |
+| Journal | The article · Byline · Search engines |
+| Accessories | The piece · Photographs · Search engines |
+| Site settings | Contact details · Opening hours · Announcement bar · Social links · Logo & icon · Search engines & analytics |
+| Footer | Appointment band · Columns · Bottom bar |
+| Gift cards | Opening section · Amounts · Wording & terms |
+| Appointment requests | Who got in touch · The appointment |
+
+The short ones — Filter terms, Questions, Messages, Newsletter signups, Media,
+Staff accounts, Navigation, Form settings — are left as one list, because
+tabbing a six-field form only hides things.
+
+### The admin's own look
+
+`src/app/(payload)/custom.css`, imported after Payload's stylesheet in
+`src/app/(payload)/layout.tsx`. Payload ships its styles inside
+`@layer payload-default`, and unlayered CSS beats layered CSS whatever the
+specificity — so that file overrides cleanly without a single `!important`,
+and anything it does not restate keeps Payload's own behaviour.
+
+Three decisions carry it:
+
+- **The grey ramp is warmed.** Payload builds every surface, border and input
+  from `--color-base-0…1000`, and maps the same ramp in reverse for dark mode.
+  Tinting it once moves the whole admin from cold grey to the boutique's
+  ivory, in both themes, with nothing else to maintain.
+- **Headings are set in the brand serif**, the body in the same system sans
+  the website uses. Only things that *name a screen* get the serif — field
+  labels stay in the sans, where they must hold up at 11px.
+- **Corners are tightened almost to square**, matching the site's buttons.
+
+Brand marks live in `src/admin/`: the wordmark on the sign-in screen and the
+initial in the header. Both are served from `public/brand/` rather than the
+media library — the login screen renders before any database read, and uploads
+under `public/media` do not survive a deploy on Vercel.
+
 Conventions that keep it learnable:
 
 - **Pages and the Homepage share one shape** — Opening section, Sections,

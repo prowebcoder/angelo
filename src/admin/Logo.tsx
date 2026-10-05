@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 
 /**
  * The boutique wordmark, shown on the login screen.

@@ -24,102 +24,136 @@ export const Footer: GlobalConfig = {
   hooks: { afterChange: [revalidateGlobal] },
   fields: [
     {
-      name: 'preFooter',
-      type: 'group',
-      label: 'Appointment band',
-      admin: { description: 'Sits above the footer on every page. Clear the heading to hide it.' },
-      fields: [
-        { name: 'heading', type: 'text', label: 'Heading' },
+      type: 'tabs',
+      tabs: [
         {
-          name: 'button',
-          type: 'group',
-          label: 'Button',
-          fields: [
-            { name: 'label', type: 'text' },
-            { name: 'url', type: 'text' },
-          ],
-        },
-      ],
-    },
-    {
-      name: 'visitHeading',
-      type: 'text',
-      defaultValue: 'Visit',
-      label: 'Heading above the address',
-    },
-    {
-      name: 'openingHoursHeading',
-      type: 'text',
-      defaultValue: 'Opening hours',
-      label: 'Heading above the opening hours',
-    },
-    {
-      name: 'socialHeading',
-      type: 'text',
-      defaultValue: 'Follow',
-      label: 'Heading above the social links',
-    },
-    {
-      name: 'columns',
-      type: 'array',
-      label: 'Link columns',
-      maxRows: 2,
-      admin: {
-        description:
-          'Sits between the address and the opening hours. Usually one column, "Explore".',
-      },
-      fields: [
-        { name: 'heading', type: 'text', required: true, label: 'Column heading' },
-        {
-          name: 'links',
-          type: 'array',
-          label: 'Links',
-          labels: { singular: 'Link', plural: 'Links' },
-          admin: {
-            description: 'Drag to reorder. These appear in this order under the heading.',
-            components: { RowLabel: '/src/admin/LinkRowLabel' },
-          },
+          label: 'Appointment band',
+          description: 'The invitation across the top of the footer, with the logo and the booking button.',
           fields: [
             {
-              type: 'row',
+              name: 'preFooter',
+              type: 'group',
+              label: ' ',
+              admin: { description: 'Clear the heading to hide the band and start the footer at the columns.' },
               fields: [
-                { name: 'label', type: 'text', required: true, label: 'What it says', admin: { width: '50%' } },
-                { name: 'url', type: 'text', required: true, label: 'Where it goes', admin: { width: '50%' } },
+                {
+                  name: 'heading',
+                  type: 'text',
+                  label: 'Heading',
+                  admin: { description: 'Set large across the footer, e.g. “Your bridal journey starts here.”' },
+                },
+                {
+                  name: 'button',
+                  type: 'group',
+                  label: 'Button',
+                  admin: { description: 'Shown at the right of the band. Both fields are needed, or no button appears.' },
+                  fields: [
+                    {
+                      type: 'row',
+                      fields: [
+                        { name: 'label', type: 'text', label: 'What it says', admin: { width: '50%' } },
+                        { name: 'url', type: 'text', label: 'Where it goes', admin: { width: '50%' } },
+                      ],
+                    },
+                  ],
+                },
               ],
             },
           ],
         },
-      ],
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-      label: 'Short paragraph (optional)',
-      admin: { description: 'Shown under the address. Leave empty to match the reference layout.' },
-    },
-    {
-      name: 'showNewsletter',
-      type: 'checkbox',
-      defaultValue: false,
-      label: 'Show the newsletter sign-up',
-      admin: { description: 'Off by default, as on the reference. The Newsletter section block is the other way to offer it.' },
-    },
-    { name: 'copyright', type: 'text', label: 'Copyright line' },
-    {
-      name: 'legalLinks',
-      type: 'array',
-      label: 'Legal links',
-      labels: { singular: 'Legal link', plural: 'Legal links' },
-      admin: {
-        description: 'Shown in the bottom bar beside the copyright — privacy, cookies, terms and the like.',
-        components: { RowLabel: '/src/admin/LinkRowLabel' },
-      },
-      fields: [
         {
-          type: 'row',
+          label: 'Columns',
+          description: 'The four columns of the footer. The address, opening hours and social links themselves come from Site settings — only their headings are set here.',
           fields: [
-            { name: 'label', type: 'text', required: true, label: 'What it says', admin: { width: '50%' } },
-            { name: 'url', type: 'text', required: true, label: 'Where it goes', admin: { width: '50%' } },
+            {
+              name: 'visitHeading',
+              type: 'text',
+              defaultValue: 'Visit',
+              label: 'Heading above the address',
+            },
+            {
+              name: 'openingHoursHeading',
+              type: 'text',
+              defaultValue: 'Opening hours',
+              label: 'Heading above the opening hours',
+            },
+            {
+              name: 'socialHeading',
+              type: 'text',
+              defaultValue: 'Follow',
+              label: 'Heading above the social links',
+            },
+            {
+              name: 'columns',
+              type: 'array',
+              label: 'Link columns',
+              maxRows: 2,
+              admin: {
+                description:
+                  'Sits between the address and the opening hours. Usually one column, "Explore".',
+              },
+              fields: [
+                { name: 'heading', type: 'text', required: true, label: 'Column heading' },
+                {
+                  name: 'links',
+                  type: 'array',
+                  label: 'Links',
+                  labels: { singular: 'Link', plural: 'Links' },
+                  admin: {
+                    description: 'Drag to reorder. These appear in this order under the heading.',
+                    components: { RowLabel: '/src/admin/LinkRowLabel' },
+                  },
+                  fields: [
+                    {
+                      type: 'row',
+                      fields: [
+                        { name: 'label', type: 'text', required: true, label: 'What it says', admin: { width: '50%' } },
+                        { name: 'url', type: 'text', required: true, label: 'Where it goes', admin: { width: '50%' } },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+              label: 'Short paragraph (optional)',
+              admin: { description: 'Shown under the address. Leave empty to match the reference layout.' },
+            },
+            {
+              name: 'showNewsletter',
+              type: 'checkbox',
+              defaultValue: false,
+              label: 'Show the newsletter sign-up',
+              admin: { description: 'Off by default, as on the reference. The Newsletter section block is the other way to offer it.' },
+            },
+          ],
+        },
+        {
+          label: 'Bottom bar',
+          description: 'The line under the columns: the copyright and the legal links.',
+          fields: [
+            { name: 'copyright', type: 'text', label: 'Copyright line' },
+            {
+              name: 'legalLinks',
+              type: 'array',
+              label: 'Legal links',
+              labels: { singular: 'Legal link', plural: 'Legal links' },
+              admin: {
+                description: 'Shown in the bottom bar beside the copyright — privacy, cookies, terms and the like.',
+                components: { RowLabel: '/src/admin/LinkRowLabel' },
+              },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    { name: 'label', type: 'text', required: true, label: 'What it says', admin: { width: '50%' } },
+                    { name: 'url', type: 'text', required: true, label: 'Where it goes', admin: { width: '50%' } },
+                  ],
+                },
+              ],
+            },
           ],
         },
       ],
