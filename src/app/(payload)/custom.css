@@ -1,0 +1,335 @@
+/*
+ * Angelo Bridal — admin theme.
+ *
+ * Payload ships its own styles inside `@layer payload-default`. Unlayered CSS
+ * always beats layered CSS, whatever the specificity, so everything here wins
+ * without a single `!important` — and anything not restated keeps Payload's
+ * own behaviour, which is what we want for the parts that work.
+ *
+ * Three decisions carry the whole theme:
+ *
+ *  1. The grey ramp is warmed. Payload builds every surface, border and input
+ *     from `--color-base-0…1000`, and in dark mode it maps the same ramp in
+ *     reverse — so tinting it once moves the entire admin from cold grey to
+ *     the boutique's ivory, in both themes, with nothing else to maintain.
+ *  2. Headings are set in the brand serif, the body in the same system sans
+ *     the website uses, so the admin reads as part of the same thing.
+ *  3. Corners are tightened almost to square, matching the site's buttons.
+ *
+ * Contrast was the constraint throughout: text sits at 800–1000 on surfaces
+ * at 0–100, which keeps every pairing past WCAG AA.
+ */
+
+:root {
+  /* ---------------------------------------------------------------- */
+  /* The warm neutral ramp                                            */
+  /* ---------------------------------------------------------------- */
+  --color-base-0: #ffffff;
+  --color-base-50: #faf9f6;
+  --color-base-100: #f3f1ea;
+  --color-base-150: #eae7de;
+  --color-base-200: #e1ddd2;
+  --color-base-250: #d7d2c6;
+  --color-base-300: #ccc6b9;
+  --color-base-350: #beb7a8;
+  --color-base-400: #afa797;
+  --color-base-450: #9f9786;
+  --color-base-500: #8f8777;
+  --color-base-550: #7f7768;
+  --color-base-600: #6f6859;
+  --color-base-650: #5f594d;
+  --color-base-700: #4f4a40;
+  --color-base-750: #413c34;
+  --color-base-800: #332f28;
+  --color-base-850: #26231d;
+  --color-base-900: #1b1915;
+  --color-base-950: #141310;
+  --color-base-1000: #0b0a09;
+
+  /* ---------------------------------------------------------------- */
+  /* Typography                                                       */
+  /* ---------------------------------------------------------------- */
+  --font-body: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  /* The website's display face, used here for anything that titles a screen. */
+  --angelo-serif: Georgia, 'Times New Roman', serif;
+  --angelo-eyebrow-size: 0.6875rem;
+  --angelo-eyebrow-tracking: 0.14em;
+
+  /* ---------------------------------------------------------------- */
+  /* Shape                                                            */
+  /* ---------------------------------------------------------------- */
+  --style-radius-s: 2px;
+  --style-radius-m: 3px;
+  --style-radius-l: 4px;
+
+  /* Room for six group headings without the menu feeling cramped. */
+  --nav-width: 288px;
+}
+
+/* -------------------------------------------------------------------- */
+/* Headings                                                             */
+/* -------------------------------------------------------------------- */
+
+/*
+ * Only things that *name a screen* get the serif — the document title, the
+ * dashboard greeting, the login panel. Field labels stay in the sans, where
+ * they have to stay legible at 11px and sit beside inputs.
+ */
+.doc-header__title,
+.angelo-dash h1,
+.login__brand h1,
+.list-header h1 {
+  font-family: var(--angelo-serif);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+
+.doc-header__title,
+.list-header h1 {
+  font-size: 1.6rem;
+  line-height: 1.15;
+}
+
+.angelo-dash h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.75rem;
+  line-height: 1.1;
+}
+
+/* -------------------------------------------------------------------- */
+/* Navigation                                                           */
+/* -------------------------------------------------------------------- */
+
+/*
+ * The six group headings are the structure of the admin, so they are set as
+ * eyebrows — small, letter-spaced, quiet — and the links beneath them carry
+ * the weight. Without this they compete with the links and the menu reads as
+ * one long undifferentiated list.
+ */
+.nav-group__toggle {
+  font-size: var(--angelo-eyebrow-size);
+  font-weight: 600;
+  letter-spacing: var(--angelo-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--theme-elevation-500);
+  padding-block: calc(var(--base) * 0.35);
+}
+
+.nav-group__toggle:hover {
+  color: var(--theme-elevation-800);
+}
+
+/* Breathing room between one group and the next. */
+.nav__wrap > * + * {
+  margin-top: calc(var(--base) * 0.25);
+}
+
+.nav__link {
+  border-radius: var(--style-radius-s);
+  padding-inline: calc(var(--base) * 0.4);
+  transition: background-color 0.12s ease;
+}
+
+.nav__link:hover {
+  background: var(--theme-elevation-100);
+}
+
+/* The page you are on, marked with a rule rather than a block of colour. */
+.nav__link--active,
+.nav__link[aria-current='page'] {
+  background: var(--theme-elevation-100);
+  box-shadow: inset 2px 0 0 var(--theme-elevation-800);
+}
+
+/* -------------------------------------------------------------------- */
+/* Lists                                                                */
+/* -------------------------------------------------------------------- */
+
+/* Column headings as eyebrows, so the data below them reads first. */
+.table thead th {
+  font-size: var(--angelo-eyebrow-size);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--theme-elevation-500);
+}
+
+.table tbody tr:hover {
+  background: var(--theme-elevation-50);
+}
+
+/* -------------------------------------------------------------------- */
+/* Fields                                                               */
+/* -------------------------------------------------------------------- */
+
+/*
+ * Help text is doing real work in this admin — most fields carry a sentence
+ * explaining what it does and where it shows up. Payload sets it very small
+ * and very faint, which is fine for an occasional hint and wrong when it is
+ * the instructions.
+ */
+.field-description {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--theme-elevation-600);
+  max-width: 44rem;
+}
+
+.field-label {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* Tabs: a quiet rule under the active one rather than a filled tab. */
+.tabs-field__tab {
+  font-size: 0.8125rem;
+  letter-spacing: 0.01em;
+}
+
+.tabs-field__tab--active {
+  box-shadow: inset 0 -2px 0 var(--theme-elevation-800);
+}
+
+/*
+ * Collapsed rows — a page's sections, the opening hours, every list of links.
+ * These are dragged and reordered constantly, so the handle area wants to
+ * read as a solid, grabbable bar.
+ */
+.collapsible__toggle,
+.array-field__draggable-rows .collapsible__header {
+  font-weight: 500;
+}
+
+.collapsible--collapsed > .collapsible__toggle-wrap {
+  background: var(--theme-elevation-50);
+}
+
+/* -------------------------------------------------------------------- */
+/* Dashboard                                                            */
+/* -------------------------------------------------------------------- */
+
+/*
+ * Classes rather than inline styles, so the dashboard is themed by the same
+ * sheet as everything else and follows the palette into dark mode.
+ */
+.angelo-dash__intro {
+  margin: 0 0 calc(var(--base) * 1.5);
+  max-width: 42rem;
+  color: var(--theme-elevation-650);
+  line-height: 1.6;
+}
+
+.angelo-dash__section {
+  margin-bottom: calc(var(--base) * 1.5);
+}
+
+.angelo-dash__heading {
+  margin: 0 0 calc(var(--base) * 0.5);
+  font-size: var(--angelo-eyebrow-size);
+  font-weight: 600;
+  letter-spacing: var(--angelo-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--theme-elevation-500);
+}
+
+.angelo-dash__grid {
+  display: grid;
+  gap: calc(var(--base) * 0.5);
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+}
+
+.angelo-dash__card {
+  display: block;
+  padding: calc(var(--base) * 0.65) calc(var(--base) * 0.75);
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-m);
+  background: var(--theme-elevation-0);
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color 0.12s ease,
+    transform 0.12s ease;
+}
+
+.angelo-dash__card:hover {
+  border-color: var(--theme-elevation-400);
+  transform: translateY(-1px);
+}
+
+.angelo-dash__card-label {
+  display: block;
+  font-size: var(--angelo-eyebrow-size);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--theme-elevation-500);
+}
+
+.angelo-dash__card-count {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--angelo-serif);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.angelo-dash__card-hint {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--theme-elevation-600);
+}
+
+/* The all-clear note shown when nothing is waiting. */
+.angelo-dash__clear {
+  margin: 0 0 calc(var(--base) * 1.5);
+  padding: calc(var(--base) * 0.65) calc(var(--base) * 0.75);
+  border: 1px solid var(--theme-elevation-150);
+  border-left: 2px solid var(--theme-success-500);
+  border-radius: var(--style-radius-m);
+  color: var(--theme-elevation-650);
+}
+
+/* "View the website", pinned above the menu. */
+.angelo-view-site {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: calc(var(--base) * 0.75);
+  padding: calc(var(--base) * 0.4) calc(var(--base) * 0.5);
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-s);
+  color: inherit;
+  text-decoration: none;
+  font-size: 0.8125rem;
+  transition:
+    border-color 0.12s ease,
+    background-color 0.12s ease;
+}
+
+.angelo-view-site:hover {
+  background: var(--theme-elevation-50);
+  border-color: var(--theme-elevation-400);
+}
+
+/* -------------------------------------------------------------------- */
+/* Login                                                                */
+/* -------------------------------------------------------------------- */
+
+/* The wordmark needs room; Payload's default brand block is sized for an icon. */
+.login__brand {
+  margin-bottom: calc(var(--base) * 1.25);
+}
+
+.angelo-login-note {
+  margin: 0 0 calc(var(--base) * 1.25);
+  text-align: center;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--theme-elevation-600);
+}

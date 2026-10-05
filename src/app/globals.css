@@ -1,0 +1,378 @@
+@import "tailwindcss";
+
+
+/* ---------------------------------------------------------------------------
+   Angelo Bridal design system.
+
+   Tokens, type scale and spacing are taken from the live Angelo Bridal site
+   so this build matches it rather than reinterpreting it:
+
+     ink #11100e · paper #fbfaf7 · ivory #f4f0e8 · stone #d9d3c8 · taupe #938a7c
+     headings  Georgia serif, weight 400, line-height .96, tight negative tracking
+     UI        system sans, uppercase, letter-spaced
+     corners   square (radius 0), except pills and avatars
+
+   Both families are system fonts, which is what the reference resolves to, so
+   there is no webfont to download and no flash of fallback text.
+--------------------------------------------------------------------------- */
+
+@theme {
+  /* Palette — exactly the reference values */
+  --color-ink: #11100e;
+  --color-paper: #fbfaf7;
+  --color-ivory: #f4f0e8;
+  --color-stone: #d9d3c8;
+  --color-taupe: #938a7c;
+  --color-white: #fff;
+
+  /* Hairline: ink at 18%, as the reference draws every rule and border */
+  --color-line: #11100e2e;
+  --color-line-strong: #11100e55;
+
+  /* Readable ink tints for body copy */
+  --color-ink-soft: #3d3a35;
+  --color-ink-muted: #6f6861;
+  --color-on-ink: #f4f0e8;
+  --color-on-ink-muted: #b4ada2;
+
+  --color-success: #4c6b4f;
+  --color-danger: #8d3c33;
+
+  /* Families — exactly what the reference resolves to.
+     Its CSS declares `--sans: var(--font-montserrat), Arial, sans-serif` but
+     never defines `--font-montserrat`, which makes that declaration invalid,
+     so the body actually falls back to the system sans stack. Matching that
+     means no webfont to download and no flash of fallback text. */
+  --font-serif: Georgia, "Times New Roman", serif;
+  --font-sans:
+    ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
+
+  /* Display scale — the reference's own clamps */
+  --text-h1: clamp(3.6rem, 8vw, 8.5rem);
+  --text-h1--line-height: 0.96;
+  --text-h1--letter-spacing: -0.055em;
+
+  --text-h2: clamp(3rem, 6vw, 7rem);
+  --text-h2--line-height: 0.96;
+  --text-h2--letter-spacing: -0.045em;
+
+  --text-h2-sm: clamp(2.2rem, 3.5vw, 4.5rem);
+  --text-h2-sm--line-height: 1;
+  --text-h2-sm--letter-spacing: -0.03em;
+
+  --text-h3: clamp(1.4rem, 2vw, 2.3rem);
+  --text-h3--line-height: 1.1;
+  --text-h3--letter-spacing: -0.025em;
+
+  --text-card: 1.45rem;
+  --text-card--line-height: 1.15;
+
+  --text-eyebrow: 0.68rem;
+  --text-eyebrow--line-height: 1.4;
+  --text-eyebrow--letter-spacing: 0.18em;
+
+  /* Rhythm — the reference's section padding */
+  --spacing-section: clamp(5rem, 10vw, 10rem);
+  --spacing-gutter: clamp(1.2rem, 5vw, 6rem);
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --header-height: 92px;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    /* The reference sets 15px/1.6; small, quiet body copy under big headings. */
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Headings are serif, regular weight, very tight leading. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    line-height: 0.96;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-taupe);
+    outline-offset: 3px;
+  }
+
+  button:focus:not(:focus-visible),
+  a:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  ::selection {
+    background-color: var(--color-stone);
+    color: var(--color-ink);
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /*
+   * The header is fixed and floats over the page, so content needs to clear
+   * it — except on pages that open with a full-bleed hero, which are meant to
+   * run underneath. `:has()` lets the page decide without the layout needing
+   * to know which routes have a hero.
+   */
+  main {
+    padding-top: 5.625rem; /* 24px announcement + 66px header */
+  }
+
+  @media (min-width: 768px) {
+    main {
+      padding-top: 7.5rem; /* 28px announcement + 92px header */
+    }
+  }
+
+  main:has(> [data-hero]:first-child),
+  main:has(> section[data-hero]:first-child) {
+    padding-top: 0;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Page gutter, matching the reference's clamp. */
+  .shell {
+    width: 100%;
+    margin-inline: auto;
+    max-width: 112rem;
+    padding-inline: clamp(1.2rem, 5vw, 6rem);
+  }
+
+  .shell-narrow {
+    width: 100%;
+    margin-inline: auto;
+    max-width: 48rem;
+    padding-inline: clamp(1.2rem, 5vw, 2.5rem);
+  }
+
+  /* Small caps label above a heading. */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: var(--text-eyebrow);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--color-taupe);
+  }
+
+  /* Square, letter-spaced, 48px minimum — the reference's button. */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding-inline: 1.5rem;
+    border: 1px solid;
+    font-family: var(--font-sans);
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    transition:
+      background 0.35s var(--ease),
+      color 0.35s var(--ease),
+      border-color 0.35s var(--ease);
+  }
+
+  .btn-primary {
+    background-color: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  .btn-primary:hover {
+    background-color: transparent;
+    color: var(--color-ink);
+  }
+
+  .btn-secondary {
+    background-color: transparent;
+    border-color: var(--color-line-strong);
+    color: var(--color-ink);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  .btn-inverse {
+    background-color: var(--color-paper);
+    border-color: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .btn-inverse:hover {
+    background-color: transparent;
+    color: var(--color-paper);
+  }
+
+  /* Editorial prose for CMS rich text. */
+  .prose-editorial {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-ink-soft);
+  }
+
+  .prose-editorial > * + * {
+    margin-top: 1.2em;
+  }
+
+  .prose-editorial h2 {
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    color: var(--color-ink);
+    margin-top: 2em;
+  }
+
+  .prose-editorial h3 {
+    font-family: var(--font-serif);
+    font-size: 1.45rem;
+    line-height: 1.15;
+    color: var(--color-ink);
+    margin-top: 1.75em;
+  }
+
+  .prose-editorial a {
+    text-decoration: underline;
+    text-decoration-color: var(--color-line-strong);
+  }
+
+  .prose-editorial a:hover {
+    text-decoration-color: var(--color-taupe);
+  }
+
+  .prose-editorial ul,
+  .prose-editorial ol {
+    padding-left: 1.25rem;
+  }
+
+  .prose-editorial ul {
+    list-style: disc;
+  }
+
+  .prose-editorial ol {
+    list-style: decimal;
+  }
+
+  .prose-editorial li + li {
+    margin-top: 0.4em;
+  }
+
+  .prose-editorial blockquote {
+    border-left: 1px solid var(--color-line-strong);
+    padding-left: 1.5rem;
+    font-family: var(--font-serif);
+    font-size: 1.45rem;
+    line-height: 1.25;
+  }
+
+  /* Hairline underline that grows on hover. */
+  .link-quiet {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 2px;
+  }
+
+  .link-quiet::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s var(--ease);
+  }
+
+  .link-quiet:hover::after,
+  .link-quiet:focus-visible::after {
+    transform: scaleX(1);
+  }
+}
+
+@layer utilities {
+  .sr-only-focusable:not(:focus):not(:focus-within) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}

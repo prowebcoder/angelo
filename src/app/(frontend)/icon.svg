@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Angelo Bridal">
+  <rect width="32" height="32" fill="#19150f" />
+  <path
+    d="M16 6.5 L23.2 25.5 M16 6.5 L8.8 25.5 M11.6 19.6 L20.4 19.6"
+    fill="none"
+    stroke="#e8dcc9"
+    stroke-width="1.5"
+    stroke-linecap="round"
+  />
+</svg>
