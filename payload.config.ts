@@ -153,6 +153,16 @@ export default buildConfig({
      */
     push: process.env.PAYLOAD_DB_PUSH ? process.env.PAYLOAD_DB_PUSH === 'true' : !isProduction,
   }),
+  /**
+   * GraphQL is off.
+   *
+   * Nothing in this app uses it — every read goes through the Local API in
+   * `src/lib/queries.ts`. Leaving it on would publish a second, fully
+   * introspectable interface onto the same data purely for someone else to
+   * find, and on Vercel it costs one of the deployment's serverless function
+   * slots for an endpoint we never call.
+   */
+  graphQL: { disable: true },
   sharp,
   typescript: { outputFile: path.resolve(dirname, 'src/payload-types.ts') },
 })
